@@ -1,6 +1,5 @@
 package com.example.kubsu.controller;
 
-import com.example.kubsu.config.security.filter.CookieAuthenticationFilter;
 import com.example.kubsu.dto.CredentialsDto;
 import com.example.kubsu.dto.UserDto;
 import com.example.kubsu.model.User;
@@ -40,7 +39,8 @@ public class AuthenticationController {
 
         model.addAttribute(user);
         log.info("user with login=" + user.getLogin() + " has been authenticated");
-        Cookie cookie = new Cookie(CookieAuthenticationFilter.COOKIE_NAME, authenticationService.createToken(userDto));
+        //Cookie cookie = new Cookie(CookieAuthenticationFilter.COOKIE_NAME, authenticationService.createToken(userDto));
+        Cookie cookie = new Cookie("test", "test");
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setMaxAge(60*30);
