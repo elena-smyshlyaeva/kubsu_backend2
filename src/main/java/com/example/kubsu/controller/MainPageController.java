@@ -1,5 +1,7 @@
 package com.example.kubsu.controller;
 
+import com.example.kubsu.dto.CredentialsDto;
+import com.example.kubsu.model.Role;
 import com.example.kubsu.model.User;
 import com.example.kubsu.service.UserService;
 import java.util.Arrays;
@@ -75,16 +77,12 @@ public class MainPageController {
         setLoginAndPassword(form);
 
         String rawPassword = form.getPassword();
+        form.setRole(Role.USER);
         userService.saveUser(form);
         log.info("user successfully saved");
 
         form.setPassword(rawPassword);
         return "result";
-    }
-
-    @GetMapping("/main")
-    public String mainPage() {
-        return "another";
     }
 
     private void setLoginAndPassword(User form) {

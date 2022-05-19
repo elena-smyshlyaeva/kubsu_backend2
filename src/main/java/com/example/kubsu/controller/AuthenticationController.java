@@ -1,12 +1,13 @@
 package com.example.kubsu.controller;
 
+import com.example.kubsu.config.security.filter.CookieAuthenticationFilter;
 import com.example.kubsu.dto.CredentialsDto;
 import com.example.kubsu.dto.UserDto;
+import com.example.kubsu.model.Role;
 import com.example.kubsu.model.User;
 import com.example.kubsu.repository.UserRepository;
 import com.example.kubsu.service.impls.AuthenticationService;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +40,7 @@ public class AuthenticationController {
 
         model.addAttribute(user);
         log.info("user with login=" + user.getLogin() + " has been authenticated");
-        //Cookie cookie = new Cookie(CookieAuthenticationFilter.COOKIE_NAME, authenticationService.createToken(userDto));
-        Cookie cookie = new Cookie("test", "test");
+        Cookie cookie = new Cookie(CookieAuthenticationFilter.COOKIE_NAME, authenticationService.createToken(userDto));
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setMaxAge(60*30);
@@ -49,7 +49,10 @@ public class AuthenticationController {
         response.addCookie(cookie);
         log.info("authentication cookie has been set");
 
-        return "redirect:/main";
+        if (userDto.getRole().equals(Role.ADMIN)){
+            return "redirect:/admin";
+        }
+        return "redirect:/auth/main";
     }
 
     private UserDto getUserDto(CredentialsDto credentialsDto) {
@@ -59,6 +62,7 @@ public class AuthenticationController {
         User foundUser = userRepository.findByLogin(credentialsDto.getLogin()).orElseThrow(
             NoSuchElementException::new);
         userDto.setId(foundUser.getId());
+        userDto.setRole(foundUser.getRole());
 
         return userDto;
     }

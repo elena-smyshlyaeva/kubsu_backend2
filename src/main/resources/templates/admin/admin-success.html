@@ -8,11 +8,8 @@
 </head>
 <body>
 <div class="congrats">
-  <h1 th:text="${form.name} + ', ваша форма принята!'"></h1>
-  <h2 th:text="'логин: ' + ${form.login} + '; пароль: ' + ${form.password}"></h2>
-  <form action="#" th:action="@{/login}" method="get">
-    <input type="submit" value="Войти" class="btn btn-success">
-  </form>
+  <h1>Заявка успешно сохранена!</h1>
+  <a th:href="'/admin'" class="btn btn-warning">На главную</a>
 </div>
 </body>
 </html>

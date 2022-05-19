@@ -8,10 +8,10 @@
 </head>
 <body>
 <div class="congrats">
-  <h1 th:text="${form.name} + ', ваша форма принята!'"></h1>
-  <h2 th:text="'логин: ' + ${form.login} + '; пароль: ' + ${form.password}"></h2>
-  <form action="#" th:action="@{/login}" method="get">
-    <input type="submit" value="Войти" class="btn btn-success">
+  <h1 th:text="${name} + ', добро пожаловать!'"></h1>
+  <h2>У вас есть возможность отредактировать отправленную заявку. </h2>
+  <form action="#" th:action="@{/auth/order}" method="get">
+    <input type="submit" value="Редактировать" class="btn btn-success">
   </form>
 </div>
 </body>

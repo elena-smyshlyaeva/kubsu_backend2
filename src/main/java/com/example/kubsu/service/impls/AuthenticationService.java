@@ -30,17 +30,13 @@ public class AuthenticationService {
 
 
     public UserDto authenticate(CredentialsDto credentialsDto) {
-        /*String encodedMasterPassword = passwordEncoder.encode(CharBuffer.wrap("the-password"));
-        if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), encodedMasterPassword)) {
-            return new UserDto(1L, "Sergio", "login", "token");
-        }*/
         String login = credentialsDto.getLogin();
         char[] password = credentialsDto.getPassword();
         User foundUser = userRepository.findByLogin(login).orElseThrow(NoSuchElementException::new);
 
         if (passwordEncoder.matches(CharBuffer.wrap(password), foundUser.getPassword())){
             log.info("password are equals!");
-            return new UserDto(foundUser.getId(), foundUser.getName(), foundUser.getLogin());
+            return new UserDto(foundUser.getId(), foundUser.getName(), foundUser.getLogin(), foundUser.getRole());
         }
         throw new RuntimeException("Invalid password");
     }
@@ -50,7 +46,7 @@ public class AuthenticationService {
 
         if (foundUser.getLogin().equals(login)) {
             log.info("logins are equals!");
-            return new UserDto(foundUser.getId(), foundUser.getName(), foundUser.getLogin());
+            return new UserDto(foundUser.getId(), foundUser.getName(), foundUser.getLogin(), foundUser.getRole());
         }
         throw new RuntimeException("Invalid login");
     }

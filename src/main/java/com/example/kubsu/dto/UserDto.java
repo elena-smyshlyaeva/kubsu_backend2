@@ -1,5 +1,7 @@
 package com.example.kubsu.dto;
 
+import com.example.kubsu.model.Role;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,15 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
 
     private Long id;
     private String name;
     private String login;
-
-    public UserDto(Long id, String name, String login) {
-        this.id = id;
-        this.name = name;
-        this.login = login;
-    }
+    private Role role;
 }
