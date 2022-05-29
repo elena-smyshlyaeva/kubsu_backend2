@@ -26,20 +26,15 @@ public class AdminController {
     private final UserRepository userRepository;
 
     @GetMapping
-    public String adminPage(@AuthenticationPrincipal UserDto userDto, Model model) {
+    public String adminPage(Model model) {
         List<User> orders = userService.getAllOrders();
-        if (userDto.getRole().equals(Role.ADMIN)) {
-            model.addAttribute("orders", orders);
-            return "admin/admin";
-        }
-        return "redirect:/auth/main";
+        model.addAttribute("orders", orders);
+        return "admin/admin";
+
     }
 
     @GetMapping("order/{id}")
-    public String editOrder(@AuthenticationPrincipal UserDto userDto, @PathVariable Long id, Model model) {
-        if (!userDto.getRole().equals(Role.ADMIN)) {
-            return "redirect:/auth/main";
-        }
+    public String editOrder(@PathVariable Long id, Model model) {
         User user = userService.getUserById(id);
         model.addAttribute("form", user);
         model.addAttribute("id", id);
@@ -47,19 +42,13 @@ public class AdminController {
     }
 
     @PostMapping("order/{id}")
-    public String deleteOrder(@AuthenticationPrincipal UserDto userDto, @PathVariable Long id, Model model) {
-        if (!userDto.getRole().equals(Role.ADMIN)) {
-            return "redirect:/auth/main";
-        }
+    public String deleteOrder(@PathVariable Long id, Model model) {
         userService.deleteById(id);
         return "redirect:/admin";
     }
 
     @GetMapping("statistic")
-    public String getSuperPowersStatistic(@AuthenticationPrincipal UserDto userDto, Model model) {
-        if (!userDto.getRole().equals(Role.ADMIN)) {
-            return "redirect:/auth/main";
-        }
+    public String getSuperPowersStatistic(Model model) {
         Integer animalSpeaking = userRepository.countUsersBySuperPower(
             SuperPower.ANIMAL_SPEAKING.getDisplayValue());
         model.addAttribute("animal", animalSpeaking);
@@ -76,12 +65,10 @@ public class AdminController {
     }
 
     @PostMapping("order/{id}/update")
-    public String updateUserForm(@AuthenticationPrincipal UserDto userDto,
+    public String updateUserForm(
         @Valid @ModelAttribute("form") User form,
         @PathVariable Long id) {
-        if (!userDto.getRole().equals(Role.ADMIN)) {
-            return "redirect:/auth/main";
-        }
+
         userService.updateById(form, id);
         return "admin/admin-success";
     }
